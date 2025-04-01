@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Currencies Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-trendline"></script>
+</head>
+
+<body class="bg-dark text-white">
+<div class="container-fluid">
+    <div class="row text-white">
+        <div class="col">
+            <h1>Tableau de bord - {{ page_label }}</h1>
+            {% for duration, label in durations.items %}
+                <a href="{% url 'home' days_range=duration currencies=currencies %}"
+                   class="btn {% if page_label == label %}btn-info{% else %}btn-secondary{% endif %} ">
+                    {{ label }}
+                </a>
+            {% endfor %}
+            |
+            <span id="currencies-buttons">
+                {% for currency in ALL_CURRENCIES %}
+                    {% with currency_str=','|add:currency %}
+                        <a id="currency-{{ currency }}"
+                           href="#"
+                           class="btn {% if currency in currencies %} btn-info {% else %} btn-secondary {% endif %}">
+                            {{ currency }}
+                        </a>
+                    {% endwith %}
+                {% endfor %}
+            </span>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        {% for currency, rate in data.items %}
+            <div class="col-md-10 col-lg-6">
+                <canvas id="chart-{{ currency }}"></canvas>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{{ data|json_script:"data" }}
+{{ days_labels|json_script:"days_labels" }}
+<script src="{% static 'currency/js/main.js' %}"></script>
+
+</body>
+
+</html>

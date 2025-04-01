@@ -1,0 +1,18 @@
+# Databse
+db.sqlite3
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Virtual environment
+.venv/
+
+# Local Configurations
+run_server.sh
+
+# Python files
+__pycache__/
